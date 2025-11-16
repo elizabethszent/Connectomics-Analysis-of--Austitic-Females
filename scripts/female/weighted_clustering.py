@@ -1,8 +1,4 @@
 # scripts/weighted_clustering.py
-# Computes weighted clustering and weighted ASPL per subject,
-# plus two nulls (degree-preserving rewiring + weight-shuffle),
-# and writes results/weighted_clustering_subjects.csv
-
 import math
 import random
 from collections import Counter
@@ -17,10 +13,10 @@ import pandas as pd
 PKEEP = 0.10
 
 #where your CPAC ROI time-series live
-DATA_ROOT = Path("data/roi_timeseries/cpac/nofilt_noglobal/rois_cc200")
+DATA_ROOT = Path("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/roi_timeseries/cpac/nofilt_noglobal/rois_cc200")
 
 #merged metadata you already produced (has FILE_ID, DX_GROUP, AGE_AT_SCAN, func_mean_fd, …)
-META = Path("data/female/metrics_merged.csv")
+META = Path("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/female/metrics_merged.csv")
 
 #null model settings
 NSWAP_FACTOR = 5#Maslov–Sneppen swaps ~ NSWAP_FACTOR * M (edges)
@@ -33,17 +29,10 @@ np.random.seed(SEED)
 
 # Helpers
 def ts_path_for(file_id: str) -> Path:
-    """Build the absolute .1D path for a given FILE_ID."""
     return DATA_ROOT / f"{file_id}_rois_cc200.1D"
 
 
 def load_ts(ts_path: Path) -> np.ndarray:
-    """
-    Read a CPAC ROI time-series .1D as a clean float array [T x R].
-    - Splits on whitespace
-    - Coerces to numeric (bad tokens -> NaN), interpolates along time, drops remaining-NaN cols
-    - Drops zero-variance columns
-    """
     df = pd.read_csv(
         ts_path,
         sep=r"\s+",
@@ -93,7 +82,7 @@ def corr_top_p_graph(ts: np.ndarray, pkeep: float = PKEEP, use_abs: bool = True)
             G.add_edge(i, j, weight=w)
     return G
 
-#Return a simple graph with consecutive int labels and float weights; self-loops removed.
+#Return a simple graph with consecutive int labels and float weights; self-loops removed
 def relabel_simple_float(G: nx.Graph) -> nx.Graph:
     H = nx.Graph()
     for u, v, d in G.edges(data=True):
@@ -104,7 +93,7 @@ def relabel_simple_float(G: nx.Graph) -> nx.Graph:
     H = nx.convert_node_labels_to_integers(H, ordering="sorted")
     return H
 
-#Average clustering with defensive relabeling; falls back to unweighted if weighted fails.
+#Average clustering with defensive relabeling; falls back to unweighted if weighted fails
 def safe_avg_clustering(G: nx.Graph, use_weight: bool = True) -> float:
     H = relabel_simple_float(G)
     if H.number_of_edges() == 0:
@@ -115,7 +104,7 @@ def safe_avg_clustering(G: nx.Graph, use_weight: bool = True) -> float:
         print(f"[warn] weighted clustering failed ({e}); falling back to unweighted.")
         return nx.average_clustering(H, weight=None)
 
-#Average shortest path on LCC given edge length attribute (e.g., length_inv = 1/weight).
+#Average shortest path on LCC given edge length attribute (e.g., length_inv = 1/weight)
 def safe_weighted_aspl(G: nx.Graph, length_attr: str = "length_inv") -> float:
     if G.number_of_nodes() == 0:
         return float("nan")
@@ -130,7 +119,7 @@ def safe_weighted_aspl(G: nx.Graph, length_attr: str = "length_inv") -> float:
         return float("nan")
     return nx.average_shortest_path_length(H, weight=length_attr)
 
-#Maslov–Sneppen rewiring (preserve degree sequence) + reassign weights from the empirical set. Returns a clean graph with 'weight' and 'length_inv' = 1/weight.
+#Maslov–Sneppen rewiring reassign weights from the empirical set. Returns a clean graph with 'weight' and 'length_inv' = 1/weight.
 def dp_sample_weighted(G_base: nx.Graph, nswap_factor: int = NSWAP_FACTOR, keep_connected: bool = False) -> nx.Graph:
     G0 = relabel_simple_float(G_base)
     Gb = nx.Graph()

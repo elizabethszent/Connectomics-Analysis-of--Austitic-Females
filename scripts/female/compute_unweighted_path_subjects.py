@@ -6,9 +6,9 @@ from pathlib import Path
 
 #config 
 PKEEP = 0.10 #keep top 10% strongest |r| edges
-DATA_ROOT = Path("data/roi_timeseries/cpac/nofilt_noglobal/rois_cc200")
-META = Path("data/female/metrics_merged.csv") #has FILE_ID (+ DX_GROUP etc.)
-OUT = Path("data/female/unweighted_path_subjects.csv")
+DATA_ROOT = Path("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/roi_timeseries/cpac/nofilt_noglobal/rois_cc200")
+META = Path("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/female/metrics_merged.csv") #has FILE_ID (+ DX_GROUP etc.)
+OUT = Path("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/female/unweighted_path_subjects.csv")
 
 #helpers 
 def load_ts(ts_path: Path) -> np.ndarray:

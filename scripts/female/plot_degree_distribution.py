@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 #load all per-node degree CSVs
-deg_files = sorted(glob.glob("results/female/degrees/*.csv"))
+deg_files = sorted(glob.glob("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/results/female/degrees/*.csv"))
 if not deg_files:
     raise FileNotFoundError("No files found in results/degrees/*.csv")
 D = pd.concat((pd.read_csv(f) for f in deg_files), ignore_index=True)
@@ -16,9 +16,9 @@ if not {"FILE_ID", "degree"}.issubset(D.columns):
     raise ValueError(f"Degree files missing required columns. Found: {D.columns.tolist()}")
 
 #attach group labels (1=ASD, 2=Control) from your metadata
-meta_path = Path("data/female/metrics_merged.csv")
+meta_path = Path("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/female/metrics_merged.csv")
 if not meta_path.exists():
-    raise FileNotFoundError("data/female/metrics_merged.csv not found. Re-run your metrics merge step.")
+    raise FileNotFoundError("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/female/metrics_merged.csv not found. Re-run your metrics merge step.")
 
 META = pd.read_csv(meta_path, usecols=["FILE_ID", "DX_GROUP"])
 D = D.merge(META, on="FILE_ID", how="left")
@@ -54,5 +54,5 @@ ax = plt.gca()
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 plt.tight_layout()
-plt.savefig("results/female/figs/degree_distribution_groups.png", dpi=200)
+plt.savefig("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/results/female/figs/degree_distribution_groups.png", dpi=200)
 plt.show()

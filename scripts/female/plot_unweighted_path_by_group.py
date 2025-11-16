@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import statsmodels.formula.api as smf
 
 #load per-subject unweighted path lengths
-P = pd.read_csv("data/female/unweighted_path_subjects.csv")   # expects FILE_ID, L_emp, (maybe group)
+P = pd.read_csv("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/female/unweighted_path_subjects.csv")   # expects FILE_ID, L_emp, (maybe group)
 
 #load phenotype/meta to get DX_GROUP, AGE_AT_SCAN, motion
-M = pd.read_csv("data/female/metrics_merged.csv")
+M = pd.read_csv("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/female/metrics_merged.csv")
 keep = [c for c in ["FILE_ID","DX_GROUP","AGE_AT_SCAN","func_mean_fd"] if c in M.columns]
 M = M[keep].copy()
 
@@ -36,11 +36,11 @@ print(m.summary())
 
 #Boxplot
 plt.figure(figsize=(7,4))
-df.boxplot(column="L_emp", by="group")
+df.boxplot(column="L_emp", by="group", showfliers=False)
 plt.title("Average shortest path (unweighted) by group")
 plt.suptitle("")
 plt.ylabel("Average shortest path (LCC)")
 plt.tight_layout()
-plt.savefig("results/female/figs/unweighted_path_groups.png", dpi=200)
+plt.savefig("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/results/female/figs/unweighted_path_groups.png", dpi=200)
 plt.close()
-print("\nSaved figure -> results/female/figs/unweighted_path_groups.png")
+print("\nSaved figure -> C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/results/female/figs/unweighted_path_groups.png")

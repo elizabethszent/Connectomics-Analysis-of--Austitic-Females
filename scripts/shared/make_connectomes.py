@@ -18,7 +18,7 @@ print(f"Found {len(files)} ROI time-series files")
 for fp in files:
     sub = Path(fp).stem.replace("_rois_cc200", "")
 
-    #read: ignore header lines that start with '#', split on whitespace,
+    #ignore header lines that start with '#', split on whitespace,
     #parse as numeric (coerce bad values to NaN)
     df = pd.read_csv(
         fp,

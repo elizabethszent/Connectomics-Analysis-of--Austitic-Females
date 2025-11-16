@@ -4,8 +4,8 @@ import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-W = pd.read_csv("results/female/weighted_clustering_subjects.csv")   # has FILE_ID, Cw_emp, group
-M = pd.read_csv("data/female/female_metadata_included.csv")       # FILE_ID, DX_GROUP, AGE_AT_SCAN, func_mean_fd, (maybe SITE_ID)
+W = pd.read_csv("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/female/weighted_clustering_subjects.csv")   # has FILE_ID, Cw_emp, group
+M = pd.read_csv("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/data/female/female_metadata_included.csv")       # FILE_ID, DX_GROUP, AGE_AT_SCAN, func_mean_fd, (maybe SITE_ID)
 
 # Choose merge columns that exist
 need = ["FILE_ID","DX_GROUP","AGE_AT_SCAN","func_mean_fd"]
@@ -55,6 +55,6 @@ plt.title("Weighted clustering by group")
 plt.xlabel("")
 plt.ylabel("Cw")
 plt.tight_layout()
-plt.savefig("results/female/figs/weighted_clustering_groups_box.png", dpi=200)
+plt.savefig("C:/Users/eliza/CPSC_599_CONNECTOMICS/TERMProject/results/female/figs/weighted_clustering_groups_box.png", dpi=200)
 plt.close()
 
